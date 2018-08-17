@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+echo "all:" > Makefile
+flags="-lncurses"
+find -maxdepth 1 -name '*.c' | sort | while read -r line; do
+    fname=${line##*/}
+    fexec=${fname%%.*}
+    sed -i'' "s|^all:.*|\0 $fexec|g" Makefile
+    sed -i'' "$ s|.*|\0\n\n$fexec: $fname\n\tgcc $fname $flags -o $fexec|g" Makefile
+done
+
